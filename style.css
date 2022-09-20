@@ -11,6 +11,9 @@ body{
     padding-top: 2vh;
     padding-bottom: 2vh;
 }
+.navbar:hover{
+    cursor: pointer;
+}
 .group {
     padding: 15px 0 0;
     display: flex;
@@ -79,3 +82,12 @@ body{
 .delete:hover {
     cursor: pointer;
   }
+
+.list {
+    background-color: rgb(30 26 68);
+    color:white;
+    margin: 10px 0;
+}
+.list:hover{
+    cursor: pointer;
+}

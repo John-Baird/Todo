@@ -3,9 +3,34 @@
 let todo = []
 let todoShow = []
 let todoCheck = []
-$(document).ready(function () {
 
-    $('.roww').on('click', 'button', function(){
+function save() {
+localStorage.setItem('todoCheck', JSON.stringify(todoCheck))
+localStorage.setItem('todoShow', JSON.stringify(todoShow))
+localStorage.setItem('todo', JSON.stringify(todo))
+}
+
+
+$(document).ready(function () {
+    function load() {
+    todo = JSON.parse(localStorage.getItem('todo'))
+    todoCheck = JSON.parse(localStorage.getItem('todoCheck'))
+    todoShow = JSON.parse(localStorage.getItem('todoShow'))
+    for (let i = 0; i < todo.length; i++){
+                
+        $('.here').append(todoShow[i])
+        document.getElementsByClassName('box')[i].checked = todoCheck[i]
+        //console.log(todoShow)
+        //console.log("item")
+    }
+    }
+    
+        if (localStorage.getItem("todo") !== null) {
+            load()
+            
+          }
+    
+        $('.roww').on('click', 'button', function(){
         a = document.getElementsByTagName("input")[0].value;
         
             if (a !== ""){
@@ -25,6 +50,7 @@ $(document).ready(function () {
             b = b-1;
             $('.here').append(todoShow[b])
         }
+        save()
  
     });
 
@@ -36,8 +62,9 @@ $(document).ready(function () {
         //console.log(d.innerText[0])
         todo.splice(id,1)
         todoShow.splice(id,1)
+        todoCheck.splice(id,1)
         d.remove()
-
+        save()
 
 
     })
@@ -48,7 +75,14 @@ $(document).ready(function () {
             
             todoCheck.splice(i,1,o)
            } 
+        save()
       });
+    
+    $('.outer').on("click", ".navbar", function(){
+        console.log("Clear")
+        localStorage.clear()
+    });
+
 
 
 }); 
