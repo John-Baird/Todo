@@ -111,9 +111,10 @@ body{
 .lists{
     display: flex;
     flex-direction: row;
-
+    flex-wrap: wrap;
 }
 
 .hide{
     visibility: hidden;
+    display: none;
 }

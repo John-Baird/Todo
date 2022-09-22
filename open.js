@@ -2,7 +2,7 @@ let list = []
 let listDiv = []
 
 let selector = ''
-
+// add a selector list and have it work the same as the check list so that it saves when you click on a different list after reload
 let todo = []
 let todoShow = []
 let todoCheck = []
@@ -58,7 +58,7 @@ $(document).ready(function () {
         function todoAdd(){
             for (let i = 0; i < todo.length; i++){
                 
-                todoShow.splice(i,1,`<div class="item" data-id="${i}"><input type="checkbox" class="box"><div class="word">${todo[i]}</div><div class="delete">🗑</div><div class="edit">✏️</div></div>`)
+                todoShow.splice(i,1,`<div class="item `+selector+`" data-id="${i}"><input type="checkbox" class="box"><div class="word">${todo[i]}</div><div class="delete">🗑</div><div class="edit">✏️</div></div>`)
                 //console.log(todoShow)
                 
             }   
@@ -183,11 +183,24 @@ $(document).ready(function () {
         selector = idl
         console.log(selector)
         $('div#hider').removeClass('hide')
+        sort()
+        
     })
 
+    function sort(){
+        
+        zl = document.getElementsByClassName('item').length
 
-
-
+        for (let i = 0; i < zl; i++){
+            z = document.getElementsByClassName('item')[i]
+            if (z.classList.contains(selector)){
+                z.classList.remove('hide')
+            }
+            else{
+                z.classList.add('hide')
+            }
+        }
+    }
 
     
 }); 
