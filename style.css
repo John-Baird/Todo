@@ -10,6 +10,7 @@ body{
     background-color: rgb(0, 29, 90);
     padding-top: 2vh;
     padding-bottom: 2vh;
+    margin-bottom: 0;
 }
 .navbar:hover{
     cursor: pointer;
@@ -86,8 +87,33 @@ body{
 .list {
     background-color: rgb(30 26 68);
     color:white;
-    margin: 10px 0;
+    margin-bottom: 10px;
 }
 .list:hover{
     cursor: pointer;
+}
+
+
+.list-item{
+    display: flex;
+    flex-direction: row;
+    background-color: rgb(0, 0, 0, .5);
+    margin: 0 10px;
+    padding: 2px 2px;
+}
+.list{
+    padding-left: 2vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.lists{
+    display: flex;
+    flex-direction: row;
+
+}
+
+.hide{
+    visibility: hidden;
 }
