@@ -1,6 +1,6 @@
 let list = []
 let listDiv = []
-
+let selectorArray = []
 let selector = ''
 // add a selector list and have it work the same as the check list so that it saves when you click on a different list after reload
 let todo = []
@@ -14,6 +14,7 @@ localStorage.setItem('todoShow', JSON.stringify(todoShow))
 localStorage.setItem('todo', JSON.stringify(todo))
 localStorage.setItem('list', JSON.stringify(list))
 localStorage.setItem('listDiv', JSON.stringify(listDiv))
+localStorage.setItem('selectorArray', JSON.stringify(selectorArray))
 }
 
 
@@ -26,6 +27,7 @@ $(document).ready(function () {
     todoShow = JSON.parse(localStorage.getItem('todoShow'))
     list = JSON.parse(localStorage.getItem('list'))
     listDiv = JSON.parse(localStorage.getItem('listDiv'))
+    selectorArray = JSON.parse(localStorage.getItem('selectorArray'))
     if (todo.length !== 0){
         for (let i = 0; i < todo.length; i++){
                     
@@ -48,7 +50,8 @@ $(document).ready(function () {
     
         $('.roww').on('click', 'button', function(){
         a = document.getElementsByTagName("input")[1].value;
-        
+        j = todo.length
+        selectorArray.splice(j,1,selector)
             if (a !== ""){
                 todo.push(a)
                 //console.log(todo)
@@ -57,8 +60,8 @@ $(document).ready(function () {
             }
         function todoAdd(){
             for (let i = 0; i < todo.length; i++){
-                
-                todoShow.splice(i,1,`<div class="item `+selector+`" data-id="${i}"><input type="checkbox" class="box"><div class="word">${todo[i]}</div><div class="delete">🗑</div><div class="edit">✏️</div></div>`)
+
+                todoShow.splice(i,1,`<div class="item `+selectorArray[i]+`" data-id="${i}"><input type="checkbox" class="box"><div class="word">${todo[i]}</div><div class="delete">🗑</div><div class="edit">✏️</div></div>`)
                 //console.log(todoShow)
                 
             }   
@@ -82,18 +85,20 @@ $(document).ready(function () {
             todo = []
             todoShow = []
             todoCheck = []
+            selectorArray = []
         }
 
         todo.splice(id,1)
         todoShow.splice(id,1)
         todoCheck.splice(id,1)
-
+        selectorArray.splice(id,1)
         console.log(todo)
         d.remove()
+        
         todoShow = []
         for (let i = 0; i < todo.length; i++){
                 
-            todoShow.splice(i,1,`<div class="item" data-id="${i}"><input type="checkbox" class="box"><div class="word">${todo[i]}</div><div class="delete">🗑</div><div class="edit">✏️</div></div>`)
+            todoShow.splice(i,1,`<div class="item `+selectorArray[i]+`" data-id="${i}"><input type="checkbox" class="box"><div class="word">${todo[i]}</div><div class="delete">🗑</div><div class="edit">✏️</div></div>`)
             
         } 
         save()
@@ -102,7 +107,8 @@ $(document).ready(function () {
         todoCheck = []
         
         load()
-
+        console.log("The selector is"+selector)
+        
     })
 
     $( document ).on( "change", ":checkbox", function () {
@@ -132,7 +138,7 @@ $(document).ready(function () {
     function slot(){
         for (let i = 0; i < list.length; i++){
                 
-            listDiv.splice(i,1,`<div class="list-item" list-data-id="${i}"><div class="name">${list[i]}</div><div class="trash">🗑</div><div>✏️</div></div>`)
+            listDiv.splice(i,1,`<div class="list-item" list-data-id="${i}"><div class="name">${list[i]}</div><div class="trash">🗑</div><div class="edit">✏️</div></div>`)
             
             
         }   
@@ -143,8 +149,18 @@ $(document).ready(function () {
     $('div').on('click','.trash', function(){
         f = this.parentElement
         let id = f.getAttribute("list-data-id")
-        //console.log(id)
+        console.log(id)
         //console.log(d.innerText[0])
+        $('.'+id).remove()
+        for (let i = 0; i < selectorArray.length; i++){
+            if (selectorArray[i] == id){
+                todo.splice(i,1) 
+                todoShow.splice(i,1)
+                todoCheck.splice(i,1)
+                selectorArray.splice(i,1)
+                i = i-1
+            }
+        }
 
 
         if(list.length == 1){
@@ -158,13 +174,17 @@ $(document).ready(function () {
         listDiv =[]
         for (let i = 0; i < list.length; i++){
                 
-            listDiv.splice(i,1,`<div class="list-item" list-data-id="${i}"><div class="name">${list[i]}</div><div class="trash">🗑</div><div>✏️</div></div>`)
+            listDiv.splice(i,1,`<div class="list-item" list-data-id="${i}"><div class="name">${list[i]}</div><div class="trash">🗑</div><div class="edit">✏️</div></div>`)
             
         } 
+        
         save()
         listDiv = []
         list = []
         load()
+        if (list.length !== 0){
+        document.getElementsByClassName("name")[0].click()
+        }
     })
     
 
@@ -202,6 +222,9 @@ $(document).ready(function () {
         }
     }
 
+    $('div').on('click', '.edit', function(){
+        
+    })
     
 }); 
 
