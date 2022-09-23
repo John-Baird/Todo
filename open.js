@@ -8,7 +8,7 @@ let todoShow = []
 let todoCheck = []
 
 function save() {
-
+selectorArray = selectorArray.filter(element => {return element !== ''})
 localStorage.setItem('todoCheck', JSON.stringify(todoCheck))
 localStorage.setItem('todoShow', JSON.stringify(todoShow))
 localStorage.setItem('todo', JSON.stringify(todo))
@@ -28,6 +28,7 @@ $(document).ready(function () {
     list = JSON.parse(localStorage.getItem('list'))
     listDiv = JSON.parse(localStorage.getItem('listDiv'))
     selectorArray = JSON.parse(localStorage.getItem('selectorArray'))
+    
     if (todo.length !== 0){
         for (let i = 0; i < todo.length; i++){
                     
@@ -41,6 +42,7 @@ $(document).ready(function () {
             $('.lists').append(listDiv[i])
         }
     }
+    todoAdd()
     }
     
         if (localStorage.getItem("todo") !== null) {
@@ -149,17 +151,30 @@ $(document).ready(function () {
     $('div').on('click','.trash', function(){
         f = this.parentElement
         let id = f.getAttribute("list-data-id")
-        console.log(id)
+        console.log("index is "+id)
         //console.log(d.innerText[0])
         $('.'+id).remove()
         for (let i = 0; i < selectorArray.length; i++){
-            if (selectorArray[i] == id){
+            if (selectorArray[i] > id){
+                
+                selectorArray[i] = parseInt(selectorArray[i]) - 1
+                selectorArray[i] = (selectorArray[i]).toString()
+               // selectorArray[i] = selectorArray[i]-1
+               
+            }
+            else{
+                if (selectorArray[i] == id){
                 todo.splice(i,1) 
                 todoShow.splice(i,1)
                 todoCheck.splice(i,1)
-                selectorArray.splice(i,1)
-                i = i-1
+                
+                selectorArray.splice(i,1,'')
+                
+                }
             }
+            
+            ///ERRRORS SOMEWHERE
+
         }
 
 
@@ -183,7 +198,7 @@ $(document).ready(function () {
         list = []
         load()
         if (list.length !== 0){
-        document.getElementsByClassName("name")[0].click()
+        document.getElementsByClassName("name")[selector-1].click()
         }
     })
     
@@ -222,8 +237,10 @@ $(document).ready(function () {
         }
     }
 
-    $('div').on('click', '.edit', function(){
-        
+    $('body').on('click', '.edit', function(){
+        //y = this.parentElement
+        //y.push('<input type="input" class="field" id="list">')
+        console.log("edit")
     })
     
 }); 
