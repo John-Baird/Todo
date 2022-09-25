@@ -42,7 +42,7 @@ $(document).ready(function () {
             $('.lists').append(listDiv[i])
         }
     }
-    todoAdd()
+    
     }
     
         if (localStorage.getItem("todo") !== null) {
@@ -71,6 +71,7 @@ $(document).ready(function () {
             b = b-1;
             $('.here').append(todoShow[b])
         }
+        dang()
         save()
  
     });
@@ -148,7 +149,8 @@ $(document).ready(function () {
         e = e-1;
         $('.lists').append(listDiv[e])
     }
-    $('div').on('click','.trash', function(){
+    $('body').on('click','.trash', function(){
+        document.getElementsByClassName("name")[selector].click()
         f = this.parentElement
         let id = f.getAttribute("list-data-id")
         console.log("index is "+id)
@@ -172,8 +174,6 @@ $(document).ready(function () {
                 
                 }
             }
-            
-            ///ERRRORS SOMEWHERE
 
         }
 
@@ -198,8 +198,18 @@ $(document).ready(function () {
         list = []
         load()
         if (list.length !== 0){
-        document.getElementsByClassName("name")[selector-1].click()
+        document.getElementsByClassName("name")[selector].click()
         }
+
+        todoShow = []
+        for (let i = 0; i < todo.length; i++){
+                
+            todoShow.splice(i,1,`<div class="item `+selectorArray[i]+`" data-id="${i}"><input type="checkbox" class="box"><div class="word">${todo[i]}</div><div class="delete">🗑</div><div class="edit">✏️</div></div>`)
+            
+        } 
+        save()
+        location.reload();
+        return false;
     })
     
 
@@ -243,5 +253,28 @@ $(document).ready(function () {
         console.log("edit")
     })
     
+    function dang() {
+        for (i = 0; i < todo.length; i++) {
+            o = document.getElementsByClassName('box')[i].checked
+            
+            todoCheck.splice(i,1,o)
+           } 
+        save()
+      }
+
+
 }); 
 
+//Have todo reload and load correctly to sort out errors
+//delete all undefined
+// Add editing feature
+
+
+//Known Errors    When you delete an empty list, all the items skip to the one before it regaurdless of number
+// Checkmarks dont go down one
+
+//TODO
+//Simulate select click
+//Fix checkbox deletion and downshift
+
+//Add edit features
