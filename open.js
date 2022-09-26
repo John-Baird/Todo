@@ -277,9 +277,86 @@ $(document).ready(function () {
     }
 
     $('body').on('click', '.edit', function(){
-        //y = this.parentElement
-        //y.push('<input type="input" class="field" id="list">')
-        console.log("edit")
+        console.log(this)
+        y = this.parentElement
+        
+        if (y.classList.contains("item")){
+            
+            if(y.children.length < 5){
+                $(y).append('<div class="edit-input"><input type="input" class="field" id="item"/><button type="button" class="btn btn-dark">Edit</button></div>')
+            }
+        }
+        if (y.classList.contains("list-item")){
+            
+            if(y.children.length < 4){
+                $(y).append('<div class="edit-input"><input type="input" class="field" id="item"/><button type="button" class="btn btn-dark">Edit</button></div>')
+            }
+        }
+        
+        console.log(y)
+
+    })
+    $('body').on('click', 'button', function(){
+        
+        
+        o = this.parentElement
+        y = o.parentElement
+        
+        if (y.classList.contains("item")){
+            g = o.children[0].value
+            console.log(y.children[1])
+            console.log(o.children[0].value)
+            if (o.children[0].value !== ''){
+                y.children[1].innerText = o.children[0].value
+                o.remove()
+                u = y.getAttribute("data-id")
+                console.log(u)
+                todo.splice(u,1,g)
+                
+                todoShow = []
+                for (let i = 0; i < todo.length; i++){
+                        
+                    todoShow.splice(i,1,`<div class="item `+selectorArray[i]+`" data-id="${i}"><input type="checkbox" class="box"><div class="word">${todo[i]}</div><div class="delete">🗑</div><div class="edit">✏️</div></div>`)
+                    
+                } 
+                save()
+                todo = []
+                todoShow = []
+                todoCheck = []
+                
+                load()
+                console.log("The selector is"+selector)
+                
+                document.getElementsByClassName("name")[selector].click()
+            }
+
+        }
+        if (y.classList.contains("list-item")){
+            g = o.children[0].value
+            console.log(y.children[0])
+            console.log(o.children[0].value)
+            if (o.children[0].value !== ''){
+                y.children[0].innerText = o.children[0].value
+                o.remove()
+                u = y.getAttribute("list-data-id")
+                console.log(u+g)
+                list.splice(u,1,g)
+                save()
+                listDiv =[]
+                for (let i = 0; i < list.length; i++){
+                        
+                    listDiv.splice(i,1,`<div class="list-item" list-data-id="${i}"><div class="name">${list[i]}</div><div class="trash">🗑</div><div class="edit">✏️</div></div>`)
+                    
+                } 
+                
+                save()
+                listDiv = []
+                list = []
+                load()
+                location.reload();
+            }
+
+        }
     })
     
     function dang() {
@@ -291,7 +368,7 @@ $(document).ready(function () {
         save()
       }
 
-
+    
 
 
 }); 
