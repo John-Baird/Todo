@@ -15,6 +15,16 @@ localStorage.setItem('todo', JSON.stringify(todo))
 localStorage.setItem('list', JSON.stringify(list))
 localStorage.setItem('listDiv', JSON.stringify(listDiv))
 localStorage.setItem('selectorArray', JSON.stringify(selectorArray))
+for (i = 0; i < todo.length; i++) {
+    a = todoShow[i]
+    b = a.includes("undefined")
+    if (b == true){
+        todoShow.splice(i,1)
+        todo.splice(i,1)
+        todoCheck.splice(i,1)
+        i = i-1
+    }
+}
 }
 
 
@@ -78,6 +88,7 @@ $(document).ready(function () {
 
 
     $('div').on('click','.delete', function(){
+        
         d = this.parentElement
         let id = d.getAttribute("data-id")
         console.log(id)
@@ -112,6 +123,7 @@ $(document).ready(function () {
         load()
         console.log("The selector is"+selector)
         
+        document.getElementsByClassName("name")[selector].click()
     })
 
     $( document ).on( "change", ":checkbox", function () {
@@ -122,7 +134,12 @@ $(document).ready(function () {
            } 
         save()
       });
-    
+
+        
+
+
+        
+
     $('.outer').on("click", ".navbar", function(){
         console.log("Clear")
         localStorage.clear()
@@ -148,17 +165,25 @@ $(document).ready(function () {
         e = listDiv.length
         e = e-1;
         $('.lists').append(listDiv[e])
+        
     }
+
     $('body').on('click','.trash', function(){
-        document.getElementsByClassName("name")[selector].click()
+        
         f = this.parentElement
         let id = f.getAttribute("list-data-id")
         console.log("index is "+id)
+        selector = id
+        document.getElementsByClassName("name")[selector].click()
+        $('div#hider').removeClass('hide')
+        sort()
         //console.log(d.innerText[0])
+        console.log('.'+id)
         $('.'+id).remove()
+        
         for (let i = 0; i < selectorArray.length; i++){
             if (selectorArray[i] > id){
-                
+                console.log("len is "+ i)
                 selectorArray[i] = parseInt(selectorArray[i]) - 1
                 selectorArray[i] = (selectorArray[i]).toString()
                // selectorArray[i] = selectorArray[i]-1
@@ -170,8 +195,8 @@ $(document).ready(function () {
                 todoShow.splice(i,1)
                 todoCheck.splice(i,1)
                 
-                selectorArray.splice(i,1,'')
-                
+                selectorArray.splice(i,1)
+                i =i-1
                 }
             }
 
@@ -197,8 +222,11 @@ $(document).ready(function () {
         listDiv = []
         list = []
         load()
+        selector = id
         if (list.length !== 0){
-        document.getElementsByClassName("name")[selector].click()
+        
+        location.reload();
+        console.log("no length")
         }
 
         todoShow = []
@@ -210,6 +238,7 @@ $(document).ready(function () {
         save()
         location.reload();
         return false;
+        
     })
     
 
@@ -263,18 +292,10 @@ $(document).ready(function () {
       }
 
 
+
+
 }); 
 
-//Have todo reload and load correctly to sort out errors
-//delete all undefined
-// Add editing feature
 
-
-//Known Errors    When you delete an empty list, all the items skip to the one before it regaurdless of number
-// Checkmarks dont go down one
-
-//TODO
-//Simulate select click
-//Fix checkbox deletion and downshift
 
 //Add edit features
