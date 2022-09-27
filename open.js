@@ -6,7 +6,6 @@ let selector = ''
 let todo = []
 let todoShow = []
 let todoCheck = []
-
 function save() {
 selectorArray = selectorArray.filter(element => {return element !== ''})
 localStorage.setItem('todoCheck', JSON.stringify(todoCheck))
@@ -26,8 +25,6 @@ for (i = 0; i < todo.length; i++) {
     }
 }
 }
-
-
 $(document).ready(function () {
     function load() {
    $('.item').remove()
@@ -38,7 +35,6 @@ $(document).ready(function () {
     list = JSON.parse(localStorage.getItem('list'))
     listDiv = JSON.parse(localStorage.getItem('listDiv'))
     selectorArray = JSON.parse(localStorage.getItem('selectorArray'))
-    
     if (todo.length !== 0){
         for (let i = 0; i < todo.length; i++){
                     
@@ -52,9 +48,7 @@ $(document).ready(function () {
             $('.lists').append(listDiv[i])
         }
     }
-    
     }
-    
         if (localStorage.getItem("todo") !== null) {
             load()
             
@@ -68,7 +62,6 @@ $(document).ready(function () {
                 todo.push(a)
                 //console.log(todo)
                 todoAdd();
-                
             }
         function todoAdd(){
             for (let i = 0; i < todo.length; i++){
@@ -83,32 +76,37 @@ $(document).ready(function () {
         }
         dang()
         save()
- 
     });
-
-
-    $('div').on('click','.delete', function(){
-        
+    function wait(time){
+        return new Promise(resolve => {
+            setTimeout(()=>{
+                resolve()
+            }, time)
+        })
+    }
+    $('body').on('click','.delete', async function(){
         d = this.parentElement
         let id = d.getAttribute("data-id")
         console.log(id)
         console.log(d.innerText[0])
         console.log(todo)
-
         if(todo.length == 1){
             todo = []
             todoShow = []
             todoCheck = []
             selectorArray = []
         }
-
         todo.splice(id,1)
         todoShow.splice(id,1)
         todoCheck.splice(id,1)
         selectorArray.splice(id,1)
         console.log(todo)
-        d.remove()
+        //ADD ANIMATION
         
+        
+        d.classList.add("spin");
+        await wait(500)
+        d.remove()
         todoShow = []
         for (let i = 0; i < todo.length; i++){
                 
@@ -119,33 +117,23 @@ $(document).ready(function () {
         todo = []
         todoShow = []
         todoCheck = []
-        
         load()
         console.log("The selector is"+selector)
-        
         document.getElementsByClassName("name")[selector].click()
+        
     })
-
     $( document ).on( "change", ":checkbox", function () {
         for (i = 0; i < todo.length; i++) {
             o = document.getElementsByClassName('box')[i].checked
-            
             todoCheck.splice(i,1,o)
            } 
         save()
       });
-
-        
-
-
-        
-
     $('.outer').on("click", ".navbar", function(){
         console.log("Clear")
         localStorage.clear()
         location.reload()
     });
-
     $('.list').on('click', 'button', function(){
         e = document.getElementsByTagName("input")[0].value;
         console.log(e)
@@ -157,17 +145,12 @@ $(document).ready(function () {
     });
     function slot(){
         for (let i = 0; i < list.length; i++){
-                
             listDiv.splice(i,1,`<div class="list-item" list-data-id="${i}"><div class="name">${list[i]}</div><div class="trash">🗑</div><div class="edit">✏️</div></div>`)
-            
-            
         }   
         e = listDiv.length
         e = e-1;
         $('.lists').append(listDiv[e])
-        
     }
-
     $('body').on('click','.trash', function(){
         
         f = this.parentElement
@@ -180,29 +163,22 @@ $(document).ready(function () {
         //console.log(d.innerText[0])
         console.log('.'+id)
         $('.'+id).remove()
-        
         for (let i = 0; i < selectorArray.length; i++){
             if (selectorArray[i] > id){
                 console.log("len is "+ i)
                 selectorArray[i] = parseInt(selectorArray[i]) - 1
                 selectorArray[i] = (selectorArray[i]).toString()
-               // selectorArray[i] = selectorArray[i]-1
-               
             }
             else{
                 if (selectorArray[i] == id){
                 todo.splice(i,1) 
                 todoShow.splice(i,1)
                 todoCheck.splice(i,1)
-                
                 selectorArray.splice(i,1)
                 i =i-1
                 }
             }
-
         }
-
-
         if(list.length == 1){
             list = []
             listDiv = []
@@ -213,43 +189,31 @@ $(document).ready(function () {
         f.remove()
         listDiv =[]
         for (let i = 0; i < list.length; i++){
-                
             listDiv.splice(i,1,`<div class="list-item" list-data-id="${i}"><div class="name">${list[i]}</div><div class="trash">🗑</div><div class="edit">✏️</div></div>`)
-            
         } 
-        
         save()
         listDiv = []
         list = []
         load()
         selector = id
         if (list.length !== 0){
-        
         location.reload();
         console.log("no length")
         }
-
         todoShow = []
         for (let i = 0; i < todo.length; i++){
-                
             todoShow.splice(i,1,`<div class="item `+selectorArray[i]+`" data-id="${i}"><input type="checkbox" class="box"><div class="word">${todo[i]}</div><div class="delete">🗑</div><div class="edit">✏️</div></div>`)
-            
         } 
         save()
         location.reload();
         return false;
-        
     })
-    
-
     if (selector == ''){
         $('div#hider').addClass('hide')
     }
     else {
         $('div#hider').removeClass('hide')
     }
-
-
     $('div').on('click', '.name', function(){
         q = this.parentElement
         let idl = q.getAttribute("list-data-id")
@@ -258,13 +222,9 @@ $(document).ready(function () {
         console.log(selector)
         $('div#hider').removeClass('hide')
         sort()
-        
     })
-
     function sort(){
-        
         zl = document.getElementsByClassName('item').length
-
         for (let i = 0; i < zl; i++){
             z = document.getElementsByClassName('item')[i]
             if (z.classList.contains(selector)){
@@ -275,33 +235,24 @@ $(document).ready(function () {
             }
         }
     }
-
     $('body').on('click', '.edit', function(){
         console.log(this)
         y = this.parentElement
-        
         if (y.classList.contains("item")){
-            
             if(y.children.length < 5){
                 $(y).append('<div class="edit-input"><input type="input" class="field" id="item"/><button type="button" class="btn btn-dark">Edit</button></div>')
             }
         }
         if (y.classList.contains("list-item")){
-            
             if(y.children.length < 4){
                 $(y).append('<div class="edit-input"><input type="input" class="field" id="item"/><button type="button" class="btn btn-dark">Edit</button></div>')
             }
         }
-        
         console.log(y)
-
     })
     $('body').on('click', 'button', function(){
-        
-        
         o = this.parentElement
         y = o.parentElement
-        
         if (y.classList.contains("item")){
             g = o.children[0].value
             console.log(y.children[1])
@@ -312,24 +263,18 @@ $(document).ready(function () {
                 u = y.getAttribute("data-id")
                 console.log(u)
                 todo.splice(u,1,g)
-                
                 todoShow = []
                 for (let i = 0; i < todo.length; i++){
-                        
                     todoShow.splice(i,1,`<div class="item `+selectorArray[i]+`" data-id="${i}"><input type="checkbox" class="box"><div class="word">${todo[i]}</div><div class="delete">🗑</div><div class="edit">✏️</div></div>`)
-                    
                 } 
                 save()
                 todo = []
                 todoShow = []
                 todoCheck = []
-                
                 load()
                 console.log("The selector is"+selector)
-                
                 document.getElementsByClassName("name")[selector].click()
             }
-
         }
         if (y.classList.contains("list-item")){
             g = o.children[0].value
@@ -344,35 +289,21 @@ $(document).ready(function () {
                 save()
                 listDiv =[]
                 for (let i = 0; i < list.length; i++){
-                        
                     listDiv.splice(i,1,`<div class="list-item" list-data-id="${i}"><div class="name">${list[i]}</div><div class="trash">🗑</div><div class="edit">✏️</div></div>`)
-                    
                 } 
-                
                 save()
                 listDiv = []
                 list = []
                 load()
                 location.reload();
             }
-
         }
     })
-    
     function dang() {
         for (i = 0; i < todo.length; i++) {
             o = document.getElementsByClassName('box')[i].checked
-            
             todoCheck.splice(i,1,o)
            } 
         save()
       }
-
-    
-
-
 }); 
-
-
-
-//Add edit features
