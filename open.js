@@ -105,7 +105,7 @@ $(document).ready(function () {
         
         
         d.classList.add("spin");
-        await wait(500)
+        await wait(700)
         d.remove()
         todoShow = []
         for (let i = 0; i < todo.length; i++){
